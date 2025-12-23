@@ -3,13 +3,15 @@ import { Layout, Space } from 'antd'
 import TablePage from './TablePage'
 import { selectorList } from '../../RTK/selectors/selectors'
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { getAssets } from '../../api/coincapApi'
+import ModalPortfolio from '../shared/ModalPortfolio'
 
 const { Header } = Layout
 
 function MainPage() {
   const dispatch = useDispatch()
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const list = useSelector(selectorList)
 
   const topAssets = list.slice(0, 3)
@@ -19,7 +21,17 @@ function MainPage() {
   }, [dispatch])
 
   console.log('list:', list)
+  const handleOk = () => {
+    // console.log('Добавляем валюту:', selectedAsset)
+    setIsModalOpen(false)
+  }
+  const handleCancel = () => {
+    setIsModalOpen(false)
+  }
 
+  const handleAdd = () => {
+    setIsModalOpen(true)
+  }
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header
@@ -35,7 +47,7 @@ function MainPage() {
         <div
           style={{
             display: 'flex',
-            justifyContent: 'space-between',
+            justifyContent: 'space-around',
             alignItems: 'center',
           }}
         >
@@ -49,13 +61,19 @@ function MainPage() {
             ))}
           </Space>
 
-          <div style={{ color: 'rgb(0 0 0 / 69%)', fontWeight: 'bold' }}>
+          <div className="portfolio-block" onClick={handleAdd}>
             Портфель: — USD
           </div>
         </div>
       </Header>
 
       <TablePage />
+
+      <ModalPortfolio
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      />
     </Layout>
   )
 }

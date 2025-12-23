@@ -31,7 +31,7 @@ const columnsBase = [
 function TablePage() {
   const list = useSelector(selectorList)
 
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalBuyOpen, setIsModalBuyOpen] = useState(false)
   const [selectedAsset, setSelectedAsset] = useState(null)
 
   const data = list.map((asset) => ({
@@ -48,19 +48,20 @@ function TablePage() {
 
   const handleAdd = (asset) => {
     setSelectedAsset(asset)
-    setIsModalOpen(true)
+    setIsModalBuyOpen(true)
   }
   const handleOk = () => {
     console.log('Добавляем валюту:', selectedAsset)
-    setIsModalOpen(false)
+    setIsModalBuyOpen(false)
   }
   const handleCancel = () => {
-    setIsModalOpen(false)
+    setIsModalBuyOpen(false)
   }
+
   const columns = [
     ...columnsBase,
     {
-      title: 'Action',
+      title: '',
       key: 'action',
       render: (_, record) => (
         <button
@@ -94,7 +95,7 @@ function TablePage() {
           locale={{ emptyText: 'Данные загружаются...' }}
         />
         <ModalBuy
-          open={isModalOpen}
+          open={isModalBuyOpen}
           asset={selectedAsset}
           onOk={handleOk}
           onCancel={handleCancel}

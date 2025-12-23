@@ -14,7 +14,6 @@ const assetsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getAssets.fulfilled, (state, action) => {
-        console.log('payload:', action.payload)
         state.status = 'succeeded'
         state.list = action.payload
       })

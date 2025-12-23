@@ -1,7 +1,7 @@
 import React from 'react'
 import { Layout, Space } from 'antd'
 import TablePage from './TablePage'
-import { selectorList , selectorError, selectorStatus} from '../../RTK/selectors/selectors'
+import { selectorList } from '../../RTK/selectors/selectors'
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { getAssets } from '../../api/coincapApi'
@@ -11,19 +11,27 @@ const { Header } = Layout
 function MainPage() {
   const dispatch = useDispatch()
   const list = useSelector(selectorList)
-  const error = useSelector(selectorError)
-  const status = useSelector(selectorStatus)
+
+  const topAssets = list.slice(0, 3)
 
   useEffect(() => {
-    dispatch(getAssets()) // ← именно здесь мы "вешаем" вызов
+    dispatch(getAssets())
   }, [dispatch])
 
   console.log('list:', list)
-  console.log('error:', error)
-  console.log('status:', status)
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Header style={{ background: 'rgb(134 140 145)', padding: '0 20px' }}>
+      <Header
+        style={{
+          position: 'fixed',
+          top: 0,
+          width: '100%',
+          zIndex: 1000,
+          background: 'rgb(134 140 145)',
+          padding: '0 20px',
+        }}
+      >
         <div
           style={{
             display: 'flex',
@@ -32,15 +40,13 @@ function MainPage() {
           }}
         >
           <Space size="large">
-            <div style={{ color: 'rgb(0 0 0 / 69%)' }}>
-              <strong>BTC:</strong> —
-            </div>
-            <div style={{ color: 'rgb(0 0 0 / 69%)' }}>
-              <strong>ETH:</strong> —
-            </div>
-            <div style={{ color: 'rgb(0 0 0 / 69%)' }}>
-              <strong>USDT:</strong> —
-            </div>
+            {topAssets.map((asset) => (
+              <div key={asset.id} style={{ color: 'rgb(0 0 0 / 69%)' }}>
+                {' '}
+                <strong>{asset.symbol}:</strong>{' '}
+                {Number(asset.priceUsd).toFixed(2)}{' '}
+              </div>
+            ))}
           </Space>
 
           <div style={{ color: 'rgb(0 0 0 / 69%)', fontWeight: 'bold' }}>

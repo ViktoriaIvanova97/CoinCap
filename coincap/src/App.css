@@ -1,8 +1,8 @@
-body{
+/* body{
   display: flex;
   align-items: center;
   justify-content: center;
-}
+} */
 .ant-table-bordered .ant-table-cell {
   border: 1px solid rgba(0, 0, 0, 0.301); 
 }

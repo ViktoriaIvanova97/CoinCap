@@ -1,5 +1,8 @@
 import { Modal, Table } from 'antd'
 import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectorCurrency, selectorTotal } from '../../RTK/selectors/selectors'
+import { handleRemove } from '../../RTK/slices/portfolioSlice'
 
 const columnsBase = [
   { title: 'Name', dataIndex: 'name', key: 'name' },
@@ -8,8 +11,21 @@ const columnsBase = [
   { title: 'Total', dataIndex: 'total', key: 'total' },
 ]
 
-function ModalPortfolio({ open, asset, onOk, onCancel }) {
-  const data = []
+function ModalPortfolio({ open, onOk, onCancel }) {
+  const dispatch = useDispatch()
+
+  const currency = useSelector(selectorCurrency)
+  const totalSum = useSelector(selectorTotal)
+
+  const data = currency.map((item, index) => ({
+    key: item.id,
+    id:item.id,
+    name: item.name,
+    price: item.price,
+    quantity: item.quantity,
+    total: item.total,
+  }))
+
   const columns = [
     ...columnsBase,
     {
@@ -24,7 +40,7 @@ function ModalPortfolio({ open, asset, onOk, onCancel }) {
             fontSize: '18px',
             color: 'blue',
           }}
-          //   onClick={() => handleRemove(record)}
+          onClick={() => dispatch(handleRemove(record.id))}
         >
           Х
         </button>
@@ -32,15 +48,10 @@ function ModalPortfolio({ open, asset, onOk, onCancel }) {
     },
   ]
   return (
-    <Modal
-      open={open}
-      onOk={onOk}
-      onCancel={onCancel}
-      footer={null}
-    >
+    <Modal open={open} onOk={onOk} onCancel={onCancel} footer={null}>
       <p>Портфель</p>
       <Table columns={columns} dataSource={data} />
-      <p>Итого: {}$ </p>
+      <p>Итого: {totalSum}$ </p>
     </Modal>
   )
 }

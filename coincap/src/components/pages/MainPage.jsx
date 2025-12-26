@@ -1,7 +1,7 @@
 import React from 'react'
 import { Layout, Space } from 'antd'
 import TablePage from './TablePage'
-import { selectorList } from '../../RTK/selectors/selectors'
+import { selectorList,selectorTotal } from '../../RTK/selectors/selectors'
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { getAssets } from '../../api/coincapApi'
@@ -13,6 +13,7 @@ function MainPage() {
   const dispatch = useDispatch()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const list = useSelector(selectorList)
+  const totalSum = useSelector(selectorTotal)
 
   const topAssets = list.slice(0, 3)
 
@@ -62,7 +63,7 @@ function MainPage() {
           </Space>
 
           <div className="portfolio-block" onClick={handleAdd}>
-            Портфель: — USD
+            Портфель: {totalSum} USD
           </div>
         </div>
       </Header>

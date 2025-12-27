@@ -10,3 +10,5 @@ export const selectorTotal = (state) =>
       return sum + value
     }, 0)
     .toFixed(2)
+
+export const selectorHistory = (state) => state.assets.history

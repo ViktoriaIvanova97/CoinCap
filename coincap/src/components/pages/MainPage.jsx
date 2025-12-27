@@ -30,7 +30,7 @@ function MainPage() {
           top: 0,
           width: '100%',
           zIndex: 1000,
-          background: 'rgb(134 140 145)',
+          background: 'rgb(58 25 39 / 83%)',
           padding: '0 20px',
         }}
       >

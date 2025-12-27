@@ -52,7 +52,8 @@ function TablePage() {
             background: 'transparent',
             cursor: 'pointer',
           }}
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation()
             setSelectedAsset(record)
             setIsModalBuyOpen(true)
           }}
@@ -75,6 +76,7 @@ function TablePage() {
         bordered
         style={{ width: '100%' }}
         scroll={{ x: 'max-content' }}
+        rowClassName={() => 'clickable-row'}
         onRow={(record) => ({
           onClick: () => navigate(`/asset/${record.abbr}`),
         })}

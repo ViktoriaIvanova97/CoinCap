@@ -1,5 +1,4 @@
 import { Modal, Table } from 'antd'
-import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectorCurrency, selectorTotal } from '../../RTK/selectors/selectors'
 import { handleRemove } from '../../RTK/slices/portfolioSlice'
@@ -17,7 +16,7 @@ function ModalPortfolio({ open, onOk, onCancel }) {
   const currency = useSelector(selectorCurrency)
   const totalSum = useSelector(selectorTotal)
 
-  const data = currency.map((item, index) => ({
+  const data = currency.map((item) => ({
     key: item.id,
     id:item.id,
     name: item.name,
@@ -38,7 +37,7 @@ function ModalPortfolio({ open, onOk, onCancel }) {
             background: 'transparent',
             cursor: 'pointer',
             fontSize: '18px',
-            color: 'blue',
+            color: 'red',
           }}
           onClick={() => dispatch(handleRemove(record.id))}
         >

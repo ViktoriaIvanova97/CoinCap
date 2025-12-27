@@ -22,3 +22,38 @@
 .ant-table-cell {
   padding: 0px 8px !important;
 }
+
+.ant-btn {
+  background-color: rgb(58 25 39 / 83%);
+}
+
+.ant-pagination-item {
+  border-color: rgb(58 25 39 / 83%);
+  color: #333;
+}
+.ant-pagination-item-active {
+  border-color: rgb(58 25 39 / 83%)  !important;;
+}
+.ant-pagination-item-active a {
+  color: rgb(58 25 39 / 83%)  !important;
+}
+.ant-pagination-item:hover {
+  border-color: rgb(58 25 39 / 83%);
+}
+.ant-pagination-item:hover a {
+  color: rgb(58 25 39 / 83%);
+}
+
+.ant-table-tbody > tr.clickable-row > td {
+  transition: background-color 0.2s ease;
+}
+
+.ant-table-tbody > tr.clickable-row:hover > td {
+  background-color:rgba(58, 25, 39, 0.308) !important;
+  cursor: pointer;
+}
+
+.ant-table-tbody > tr.clickable-row:active > td {
+  background-color: rgb(58, 25, 39, 0.308) !important;
+}
+

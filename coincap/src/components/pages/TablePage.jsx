@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
 import { Layout, Table } from 'antd'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { selectorList } from '../../RTK/selectors/selectors'
 import { formatCurrency } from '../shared/formatCurrency'
 import ModalBuy from '../shared/ModalBuy'
 
-const { Content } = Layout
 
 function TablePage() {
   const list = useSelector(selectorList)
+  const navigate = useNavigate()
 
   const [isModalBuyOpen, setIsModalBuyOpen] = useState(false)
   const [selectedAsset, setSelectedAsset] = useState(null)
@@ -74,6 +75,9 @@ function TablePage() {
         bordered
         style={{ width: '100%' }}
         scroll={{ x: 'max-content' }}
+        onRow={(record) => ({
+          onClick: () => navigate(`/asset/${record.abbr}`),
+        })}
       />
 
       <ModalBuy

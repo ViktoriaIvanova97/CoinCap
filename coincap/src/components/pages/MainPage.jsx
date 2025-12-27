@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Layout, Space } from 'antd'
-import TablePage from './TablePage'
-import { selectorList,selectorTotal } from '../../RTK/selectors/selectors'
+import { Routes, Route } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect, useState } from 'react'
+import { selectorList, selectorTotal } from '../../RTK/selectors/selectors'
 import { getAssets } from '../../api/coincapApi'
+import TablePage from './TablePage'
+import AssetPage from './AssetPage'
 import ModalPortfolio from '../shared/ModalPortfolio'
 
 const { Header, Content } = Layout
@@ -21,18 +22,6 @@ function MainPage() {
     dispatch(getAssets())
   }, [dispatch])
 
-  console.log('list:', list)
-  const handleOk = () => {
-    // console.log('Добавляем валюту:', selectedAsset)
-    setIsModalOpen(false)
-  }
-  const handleCancel = () => {
-    setIsModalOpen(false)
-  }
-
-  const handleAdd = () => {
-    setIsModalOpen(true)
-  }
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header
@@ -55,33 +44,29 @@ function MainPage() {
           <Space size="large">
             {topAssets.map((asset) => (
               <div key={asset.id} style={{ color: 'rgb(0 0 0 / 69%)' }}>
-                {' '}
                 <strong>{asset.symbol}:</strong>{' '}
-                {Number(asset.priceUsd).toFixed(2)}{' '}
+                {Number(asset.priceUsd).toFixed(2)}
               </div>
             ))}
           </Space>
 
-          <div className="portfolio-block" onClick={handleAdd}>
+          <div className="portfolio-block" onClick={() => setIsModalOpen(true)}>
             Портфель: {totalSum} USD
           </div>
         </div>
       </Header>
 
-      <Content
-        style={{
-          marginTop: 64,
-          padding: '20px',
-          width: '100%',
-        }}
-      >
-        <TablePage />
+      <Content style={{ marginTop: 64, padding: '20px', width: '100%' }}>
+        <Routes>
+          <Route path="/" element={<TablePage />} />
+          <Route path="/asset/:symbol" element={<AssetPage />} />
+        </Routes>
       </Content>
 
       <ModalPortfolio
         open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        onOk={() => setIsModalOpen(false)}
+        onCancel={() => setIsModalOpen(false)}
       />
     </Layout>
   )

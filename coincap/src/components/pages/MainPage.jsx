@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import { getAssets } from '../../api/coincapApi'
 import ModalPortfolio from '../shared/ModalPortfolio'
 
-const { Header } = Layout
+const { Header, Content } = Layout
 
 function MainPage() {
   const dispatch = useDispatch()
@@ -68,7 +68,15 @@ function MainPage() {
         </div>
       </Header>
 
-      <TablePage />
+      <Content
+        style={{
+          marginTop: 64,
+          padding: '20px',
+          width: '100%',
+        }}
+      >
+        <TablePage />
+      </Content>
 
       <ModalPortfolio
         open={isModalOpen}

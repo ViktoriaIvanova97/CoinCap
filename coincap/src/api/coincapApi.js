@@ -1,14 +1,17 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
+const API_TOKEN = import.meta.env.VITE_TOKEN
+const API_ASSETS = import.meta.env.VITE_ASSETS
+
 export const getAssets = createAsyncThunk(
   'assets/getAssets',
   async (_, thunkAPI) => {
     try {
-      const res = await axios.get('https://rest.coincap.io/v3/assets', {
+      const res = await axios.get(`${API_ASSETS}`, {
         headers: {
           Authorization:
-            'Bearer 68578b5946048ffe84d46bbfa8969d1d23d8502d9841805069acb9935a4072ba',
+            `Bearer ${API_TOKEN}`,
         },
       })
       return res.data.data
@@ -24,12 +27,12 @@ export const getAssetHistory = createAsyncThunk(
   async ({ id, interval = 'h1' }, thunkAPI) => {
     try {
       const res = await axios.get(
-        `https://rest.coincap.io/v3/assets/${id}/history`,
+        `${API_ASSETS}/${id}/history`,
         {
           params: { interval },
           headers: {
             Authorization:
-              'Bearer 68578b5946048ffe84d46bbfa8969d1d23d8502d9841805069acb9935a4072ba',
+            `Bearer ${API_TOKEN}`,
           },
         }
       )

@@ -15,8 +15,8 @@ import TopAssets from '../shared/TopAssets'
 import PortfolioSummary from '../shared/PortfolioSummary'
 import TablePage from './TablePage'
 
-const AssetPage = lazy(() => import('./AssetPage'))
 const ModalPortfolio = lazy(() => import('../shared/ModalPortfolio'))
+const AssetPage = lazy(() => import('./AssetPage'))
 
 const { Header, Content } = Layout
 
@@ -52,7 +52,14 @@ function MainPage() {
       <Content className="main-page-content">
         <Routes>
           <Route path="/" element={<TablePage />} />
-          <Route path="/asset/:symbol" element={<AssetPage />} />
+          <Route
+            path="/asset/:symbol"
+            element={
+              <Suspense fallback={<p>Загрузка страницы...</p>}>
+                <AssetPage />
+              </Suspense>
+            }
+          />
         </Routes>
       </Content>
 

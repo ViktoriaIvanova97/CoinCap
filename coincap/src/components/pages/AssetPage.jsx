@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Button, Table } from 'antd'
 import { selectorHistory, selectorList } from '../../RTK/selectors/selectors'
 import { formatCurrency } from '../shared/formatCurrency'
@@ -16,8 +16,10 @@ function AssetPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const asset = list.find((a) => a.symbol === symbol)
-
+  const asset = useMemo(
+    () => list.find((a) => a.symbol === symbol),
+    [list, symbol]
+  )
 
   useEffect(() => {
     if (asset) {
@@ -25,55 +27,59 @@ function AssetPage() {
     }
   }, [asset, dispatch])
 
-  const chartData = Array.isArray(history)
-  ? history.map((p) => ({
+  const chartData = useMemo(() => {
+    if (!Array.isArray(history)) return []
+
+    return history.map((p) => ({
       time: new Date(p.time).toLocaleTimeString('ru-RU', {
         hour: '2-digit',
         minute: '2-digit',
       }),
       price: Number(p.priceUsd),
     }))
-  : []
+  }, [history])
 
   if (!asset) return <p>Валюта не найдена</p>
 
-
-  const infoData = [
-    {
-      key: '1',
-      label: 'Доступное предложение для торговли',
-      value: `${Number(asset.supply).toLocaleString()} ${asset.symbol}`,
-    },
-    {
-      key: '2',
-      label: 'Общие объемы выпущенных',
-      value: `${Number(asset.maxSupply).toLocaleString()} ${asset.symbol}`,
-    },
-    {
-      key: '3',
-      label: 'Объем торгов за 24ч',
-      value: formatCurrency(asset.volumeUsd24Hr),
-    },
-    {
-      key: '4',
-      label: 'Средняя цена за объем (24ч)',
-      value: formatCurrency(asset.vwap24Hr),
-    },
-    {
-      key: '5',
-      label: 'Изменение цены (24ч)',
-      value: `${Number(asset.changePercent24Hr).toFixed(2)}%`,
-    },
-    {
-      key: '6',
-      label: 'Сайт',
-      value: (
-        <a href={asset.explorer} target="_blank" rel="noopener noreferrer">
-          {asset.explorer}
-        </a>
-      ),
-    },
-  ]
+  const infoData = useMemo(
+    () => [
+      {
+        key: '1',
+        label: 'Доступное предложение для торговли',
+        value: `${Number(asset.supply).toLocaleString()} ${asset.symbol}`,
+      },
+      {
+        key: '2',
+        label: 'Общие объемы выпущенных',
+        value: `${Number(asset.maxSupply).toLocaleString()} ${asset.symbol}`,
+      },
+      {
+        key: '3',
+        label: 'Объем торгов за 24ч',
+        value: formatCurrency(asset.volumeUsd24Hr),
+      },
+      {
+        key: '4',
+        label: 'Средняя цена за объем (24ч)',
+        value: formatCurrency(asset.vwap24Hr),
+      },
+      {
+        key: '5',
+        label: 'Изменение цены (24ч)',
+        value: `${Number(asset.changePercent24Hr).toFixed(2)}%`,
+      },
+      {
+        key: '6',
+        label: 'Сайт',
+        value: (
+          <a href={asset.explorer} target="_blank" rel="noopener noreferrer">
+            {asset.explorer}
+          </a>
+        ),
+      },
+    ],
+    [asset]
+  )
 
   const columns = [
     { title: 'Параметр', dataIndex: 'label', key: 'label' },
@@ -112,4 +118,4 @@ function AssetPage() {
   )
 }
 
-export default AssetPage
+export default React.memo(PriceChart)

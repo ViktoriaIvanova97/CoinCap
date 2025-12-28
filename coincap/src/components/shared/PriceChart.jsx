@@ -8,18 +8,11 @@ import {
   CartesianGrid,
 } from 'recharts'
 
-function PriceChart({ data }) {
+const PriceChart = React.memo(function PriceChart({ data }) {
   if (!data.length) return <p>Нет данных для графика</p>
 
   return (
-    <div
-      style={{
-        width: '800px',
-        maxWidth: '100%',
-        height: 250,
-        margin: '0 auto',
-      }}
-    >
+    <div className="price-chart-block">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data}>
           <CartesianGrid stroke="#f0f0f0" />
@@ -31,6 +24,5 @@ function PriceChart({ data }) {
       </ResponsiveContainer>
     </div>
   )
-}
-
+})
 export default PriceChart

@@ -1,10 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getAssets , getAssetHistory} from '../../api/coincapApi'
-
+import { getAssets, getAssetHistory } from '../../api/coincapApi'
 
 const initialState = {
   list: [],
-  history:[],
+  history: [],
   status: 'idle',
   error: null,
 }
@@ -23,14 +22,18 @@ const assetsSlice = createSlice({
         state.history = action.payload
       })
       .addMatcher(
-        (action) => action.type === getAssets.pending.type,
+        (action) =>
+          action.type === getAssets.pending.type ||
+          action.type === getAssetHistory.pending.type,
         (state) => {
           state.status = 'loading'
           state.error = null
         }
       )
       .addMatcher(
-        (action) => action.type === getAssets.rejected.type,
+        (action) =>
+          action.type === getAssets.rejected.type ||
+          action.type === getAssetHistory.rejected.type,
         (state, action) => {
           state.status = 'failed'
           state.error = action.payload

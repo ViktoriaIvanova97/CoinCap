@@ -1,0 +1,1 @@
+import{m as r}from"./index-749BU2s-.js";import{B as i}from"./BuyForm-DhPNXWs6.js";import{M as l}from"./index-DakuMLHu.js";function f({open:t,asset:o,onOk:m,onCancel:e}){return r.jsx(l,{title:`Купить ${o?.name||""}`,open:t,onCancel:e,footer:null,width:"50%",children:r.jsx(i,{asset:o,onComplete:m})})}export{f as default};

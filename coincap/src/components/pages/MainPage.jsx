@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Layout, Space } from 'antd'
+import React, { useEffect, useState, useMemo, useCallback } from 'react'
+import { Layout } from 'antd'
 import { Routes, Route } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectorList, selectorTotal } from '../../RTK/selectors/selectors'
@@ -7,6 +7,8 @@ import { getAssets } from '../../api/coincapApi'
 import TablePage from './TablePage'
 import AssetPage from './AssetPage'
 import ModalPortfolio from '../shared/ModalPortfolio'
+import TopAssets from '../shared/TopAssets'
+import PortfolioSummary from '../shared/PortfolioSummary'
 
 const { Header, Content } = Layout
 
@@ -16,47 +18,30 @@ function MainPage() {
   const list = useSelector(selectorList)
   const totalSum = useSelector(selectorTotal)
 
-  const topAssets = list.slice(0, 3)
-
   useEffect(() => {
     dispatch(getAssets())
   }, [dispatch])
 
+  const topAssets = useMemo(() => list.slice(0, 3), [list])
+
+  const openModal = useCallback(() => {
+    setIsModalOpen(true)
+  }, [])
+
+  const closeModal = useCallback(() => {
+    setIsModalOpen(false)
+  }, [])
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Header
-        style={{
-          position: 'fixed',
-          top: 0,
-          width: '100%',
-          zIndex: 1000,
-          background: 'rgb(58 25 39 / 83%)',
-          padding: '0 20px',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-around',
-            alignItems: 'center',
-          }}
-        >
-          <Space size="large">
-            {topAssets.map((asset) => (
-              <div key={asset.id} style={{ color: 'rgb(0 0 0 / 69%)' }}>
-                <strong>{asset.symbol}:</strong>{' '}
-                {Number(asset.priceUsd).toFixed(2)}
-              </div>
-            ))}
-          </Space>
-
-          <div className="portfolio-block" onClick={() => setIsModalOpen(true)}>
-            Портфель: {totalSum} USD
-          </div>
+      <Header className="header">
+        <div className="header-block ">
+          <TopAssets assets={topAssets} />
+          <PortfolioSummary totalSum={totalSum} onClick={openModal} />
         </div>
       </Header>
 
-      <Content style={{ marginTop: 64, padding: '20px', width: '100%' }}>
+      <Content className="main-page-content">
         <Routes>
           <Route path="/" element={<TablePage />} />
           <Route path="/asset/:symbol" element={<AssetPage />} />
@@ -65,8 +50,8 @@ function MainPage() {
 
       <ModalPortfolio
         open={isModalOpen}
-        onOk={() => setIsModalOpen(false)}
-        onCancel={() => setIsModalOpen(false)}
+        onOk={closeModal}
+        onCancel={closeModal}
       />
     </Layout>
   )

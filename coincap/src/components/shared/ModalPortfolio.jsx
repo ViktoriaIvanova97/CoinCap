@@ -18,7 +18,7 @@ function ModalPortfolio({ open, onOk, onCancel }) {
 
   const data = currency.map((item) => ({
     key: item.id,
-    id:item.id,
+    id: item.id,
     name: item.name,
     price: item.price,
     quantity: item.quantity,
@@ -47,7 +47,13 @@ function ModalPortfolio({ open, onOk, onCancel }) {
     },
   ]
   return (
-    <Modal open={open} onOk={onOk} onCancel={onCancel} footer={null}>
+    <Modal
+      open={open}
+      onOk={onOk}
+      onCancel={onCancel}
+      footer={null}
+      width="50%"
+    >
       <p>Портфель</p>
       <Table columns={columns} dataSource={data} />
       <p>Итого: {totalSum}$ </p>

@@ -13,8 +13,8 @@ import { selectorList, selectorTotal } from '../../RTK/selectors/selectors'
 import { getAssets } from '../../api/coincapApi'
 import TopAssets from '../shared/TopAssets'
 import PortfolioSummary from '../shared/PortfolioSummary'
+import TablePage from './TablePage'
 
-const TablePage = lazy(() => import('./TablePage'))
 const AssetPage = lazy(() => import('./AssetPage'))
 const ModalPortfolio = lazy(() => import('../shared/ModalPortfolio'))
 
@@ -50,12 +50,10 @@ function MainPage() {
       </Header>
 
       <Content className="main-page-content">
-        <Suspense fallback={<div style={{ padding: 20 }}>Загрузка…</div>}>
-          <Routes>
-            <Route path="/" element={<TablePage />} />
-            <Route path="/asset/:symbol" element={<AssetPage />} />
-          </Routes>
-        </Suspense>
+        <Routes>
+          <Route path="/" element={<TablePage />} />
+          <Route path="/asset/:symbol" element={<AssetPage />} />
+        </Routes>
       </Content>
 
       <Suspense fallback={null}>

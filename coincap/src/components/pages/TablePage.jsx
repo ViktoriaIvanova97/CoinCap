@@ -1,10 +1,11 @@
-import React, { useState, useMemo, useCallback } from 'react'
+import React, { useState, useMemo, useCallback, lazy, Suspense } from 'react'
 import { Table } from 'antd'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { selectorList } from '../../RTK/selectors/selectors'
 import { formatCurrency } from '../shared/formatCurrency'
-import ModalBuy from '../shared/ModalBuy'
+
+const ModalBuy = lazy(() => import('../shared/ModalBuy'))
 
 function TablePage() {
   const list = useSelector(selectorList)
@@ -99,13 +100,14 @@ function TablePage() {
           onClick: () => handleRowClick(record),
         })}
       />
-
-      <ModalBuy
-        open={isModalBuyOpen}
-        asset={selectedAsset}
-        onOk={closeBuyModal}
-        onCancel={closeBuyModal}
-      />
+      <Suspense fallback={null}>
+        <ModalBuy
+          open={isModalBuyOpen}
+          asset={selectedAsset}
+          onOk={closeBuyModal}
+          onCancel={closeBuyModal}
+        />
+      </Suspense>
     </>
   )
 }

@@ -1,14 +1,22 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react'
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+  lazy,
+  Suspense,
+} from 'react'
 import { Layout } from 'antd'
 import { Routes, Route } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectorList, selectorTotal } from '../../RTK/selectors/selectors'
 import { getAssets } from '../../api/coincapApi'
-import TablePage from './TablePage'
-import AssetPage from './AssetPage'
-import ModalPortfolio from '../shared/ModalPortfolio'
 import TopAssets from '../shared/TopAssets'
 import PortfolioSummary from '../shared/PortfolioSummary'
+
+const TablePage = lazy(() => import('./TablePage'))
+const AssetPage = lazy(() => import('./AssetPage'))
+const ModalPortfolio = lazy(() => import('../shared/ModalPortfolio'))
 
 const { Header, Content } = Layout
 
@@ -42,17 +50,21 @@ function MainPage() {
       </Header>
 
       <Content className="main-page-content">
-        <Routes>
-          <Route path="/" element={<TablePage />} />
-          <Route path="/asset/:symbol" element={<AssetPage />} />
-        </Routes>
+        <Suspense fallback={<div style={{ padding: 20 }}>Загрузка…</div>}>
+          <Routes>
+            <Route path="/" element={<TablePage />} />
+            <Route path="/asset/:symbol" element={<AssetPage />} />
+          </Routes>
+        </Suspense>
       </Content>
 
-      <ModalPortfolio
-        open={isModalOpen}
-        onOk={closeModal}
-        onCancel={closeModal}
-      />
+      <Suspense fallback={null}>
+        <ModalPortfolio
+          open={isModalOpen}
+          onOk={closeModal}
+          onCancel={closeModal}
+        />
+      </Suspense>
     </Layout>
   )
 }

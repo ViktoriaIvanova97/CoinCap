@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Button, Table } from 'antd'
 import { selectorHistory, selectorList } from '../../RTK/selectors/selectors'
 import { formatCurrency } from '../shared/formatCurrency'
@@ -29,7 +29,6 @@ function AssetPage() {
 
   const chartData = useMemo(() => {
     if (!Array.isArray(history)) return []
-
     return history.map((p) => ({
       time: new Date(p.time).toLocaleTimeString('ru-RU', {
         hour: '2-digit',
@@ -39,52 +38,59 @@ function AssetPage() {
     }))
   }, [history])
 
-  if (!asset) return <p>Валюта не найдена</p>
-
-  const infoData = useMemo(
-    () => [
+  const infoData = useMemo(() => {
+    if (!asset) return []
+    return [
       {
         key: '1',
         label: 'Доступное предложение для торговли',
-        value: `${Number(asset.supply).toLocaleString()} ${asset.symbol}`,
+        value: `${Number(asset.supply || 0).toLocaleString()} ${
+          asset.symbol || ''
+        }`,
       },
       {
         key: '2',
         label: 'Общие объемы выпущенных',
-        value: `${Number(asset.maxSupply).toLocaleString()} ${asset.symbol}`,
+        value: `${Number(asset.maxSupply || 0).toLocaleString()} ${
+          asset.symbol || ''
+        }`,
       },
       {
         key: '3',
         label: 'Объем торгов за 24ч',
-        value: formatCurrency(asset.volumeUsd24Hr),
+        value: formatCurrency(asset.volumeUsd24Hr || 0),
       },
       {
         key: '4',
         label: 'Средняя цена за объем (24ч)',
-        value: formatCurrency(asset.vwap24Hr),
+        value: formatCurrency(asset.vwap24Hr || 0),
       },
       {
         key: '5',
         label: 'Изменение цены (24ч)',
-        value: `${Number(asset.changePercent24Hr).toFixed(2)}%`,
+        value: `${Number(asset.changePercent24Hr || 0).toFixed(2)}%`,
       },
       {
         key: '6',
         label: 'Сайт',
-        value: (
+        value: asset.explorer ? (
           <a href={asset.explorer} target="_blank" rel="noopener noreferrer">
             {asset.explorer}
           </a>
+        ) : (
+          '—'
         ),
       },
-    ],
-    [asset]
-  )
+    ]
+  }, [asset])
 
   const columns = [
     { title: 'Параметр', dataIndex: 'label', key: 'label' },
     { title: 'Значение', dataIndex: 'value', key: 'value' },
   ]
+
+
+  if (!asset) return <p>Валюта не найдена</p>
 
   return (
     <div
@@ -118,4 +124,4 @@ function AssetPage() {
   )
 }
 
-export default React.memo(PriceChart)
+export default React.memo(AssetPage)

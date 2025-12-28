@@ -30,9 +30,9 @@ CoinCap/
 ├── src/
 │   ├── api/          # запросы к CoinCap API
 │   ├── components/   # UI-компоненты (PriceChart, BuyForm и др.)
-│   ├── pages/        # страницы (AssetPage, MainPage)
-│   ├── RTK/          # Redux Toolkit (slices, selectors)
-│   ├── shared/       # вспомогательные функции
+│       ├── pages/        # страницы (AssetPage, MainPage)
+│       ├── shared/       # вспомогательные функции
+│   ├── RTK/           # Redux Toolkit (slices, selectors)
 ├── public/
 ├── package.json
 └── README.md

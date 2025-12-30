@@ -1,0 +1,1 @@
+import{j as r}from"./index-CPjH-1qk.js";import{B as i}from"./BuyForm-BOt6heKR.js";import{M as l}from"./index-BariOMhb.js";import"./InfoCircleFilled-3LhWZUKj.js";function f({open:t,asset:o,onOk:m,onCancel:e}){return r.jsx(l,{title:`Купить ${o?.name||""}`,open:t,onCancel:e,footer:null,width:"50%",children:r.jsx(i,{asset:o,onComplete:m})})}export{f as default};

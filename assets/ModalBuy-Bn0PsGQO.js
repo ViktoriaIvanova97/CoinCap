@@ -1,1 +1,0 @@
-import{j as r}from"./index-Dyq105gJ.js";import{B as i}from"./BuyForm-CtdE_OOj.js";import{M as l}from"./index-DrJzQ6tP.js";function f({open:t,asset:o,onOk:m,onCancel:e}){return r.jsx(l,{title:`Купить ${o?.name||""}`,open:t,onCancel:e,footer:null,width:"50%",children:r.jsx(i,{asset:o,onComplete:m})})}export{f as default};

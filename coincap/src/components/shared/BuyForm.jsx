@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Input, Button } from 'antd'
+import { Input, Button , message} from 'antd'
 import { useDispatch } from 'react-redux'
 import { addCurrency } from '../../RTK/slices/portfolioSlice'
 
@@ -24,19 +24,23 @@ function BuyForm({ asset, onComplete }) {
   }, [quantity, asset])
 
   const handleAdd = () => {
-    if (quantity && asset) {
-      dispatch(
-        addCurrency({
-          id: Date.now(),
-          name: asset.name,
-          price:parseFloat(asset.priceUsd).toFixed(2),
-          quantity: quantity,
-          total: parseFloat(total)
-        })
-      )
-      setQuantity('')
-      onComplete?.()
+    const qty = parseFloat(quantity)
+    if (!asset || isNaN(qty) || qty <= 0) {
+      message.error('Количество должно быть положительным числом')
+      return
     }
+
+    dispatch(
+      addCurrency({
+        id: Date.now(),
+        name: asset.name,
+        price: parseFloat(asset.priceUsd).toFixed(2),
+        quantity: quantity,
+        total: parseFloat(total),
+      })
+    )
+    setQuantity('')
+    onComplete?.()
   }
 
   return (
